@@ -5,6 +5,7 @@ from gym import spaces
 import pandas as pd
 import numpy as np
 
+# some initial settings
 MAX_ACCOUNT_BALANCE = 2147483647
 MAX_NUM_SHARES = 2147483647
 MAX_SHARE_PRICE = 5000
@@ -16,19 +17,26 @@ INITIAL_ACCOUNT_BALANCE = 10000
 
 class StockTradingEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""
+    # Why we choose this one?
+    # We want to consider/simulate:
+    # How a human trader would perceive their environment.
+    # What observations would they make before deciding to make a trade?
     metadata = {'render.modes': ['human']}
 
     def __init__(self, df):
         super(StockTradingEnv, self).__init__()
 
+        # What is df?
         self.df = df
         self.reward_range = (0, MAX_ACCOUNT_BALANCE)
 
         # Actions of the format Buy x%, Sell x%, Hold, etc.
+        # Contain all of the actions possible for an agent to take in the environment
         self.action_space = spaces.Box(
             low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
 
         # Prices contains the OHCL values for the last five prices
+        # Contains all of the environment’s data to be observed by the agent.
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(6, 6), dtype=np.float16)
 
@@ -115,6 +123,8 @@ class StockTradingEnv(gym.Env):
 
     def reset(self):
         # Reset the state of the environment to an initial state
+        # This is followed by many steps through the environment, in which an action will be provided by the model and must be executed, and the next observation returned.
+        # This is also where rewards are calculated, more on this later.
         self.balance = INITIAL_ACCOUNT_BALANCE
         self.net_worth = INITIAL_ACCOUNT_BALANCE
         self.max_net_worth = INITIAL_ACCOUNT_BALANCE
@@ -131,6 +141,7 @@ class StockTradingEnv(gym.Env):
 
     def render(self, mode='human', close=False):
         # Render the environment to the screen
+        # This could be as simple as a print statement, or as complicated as rendering a 3D environment using openGL.
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
 
         print(f'Step: {self.current_step}')
