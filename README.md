@@ -4,7 +4,7 @@ Usually a trader would most likely look at some charts of a stock's price action
 
 They would combine this visual information with prior knowledge of similiar price action to make an informed decision of which direction the stock is likely to move
 
-##Installation
+## Installation
 ### Prerequisites
 
 Mac OS X
