@@ -7,7 +7,7 @@ They would combine this visual information with prior knowledge of similiar pric
 ## Installation
 ### Prerequisites
 
-Mac OS X
+#### Mac OS X
 
 brew install mpich <br>
 pip3 install mpi4py
