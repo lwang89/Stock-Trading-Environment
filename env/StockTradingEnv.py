@@ -26,19 +26,25 @@ class StockTradingEnv(gym.Env):
     def __init__(self, df):
         super(StockTradingEnv, self).__init__()
 
-        # What is df?
+        # the data passed in from main.py
         self.df = df
         self.reward_range = (0, MAX_ACCOUNT_BALANCE)
 
         # Actions of the format Buy x%, Sell x%, Hold, etc.
-        # Contain all of the actions possible for an agent to take in the environment
+        # Contain all of the actions possible for an agent to take in the environment which should include the amount of a given stock to buy or sell each time.
+        # two kinds: 1. a discrete number;
+        # a continuous spectrum of amounts(0-100%)
         self.action_space = spaces.Box(
             low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
 
         # Prices contains the OHCL values for the last five prices
         # Contains all of the environment’s data to be observed by the agent.
+        # We should include all of the input variables we want the agent to consider before makeing or not making a trade.
+        # Including: the stock data points(open price, high, low, close and daily volume) for a period(a week, or a year, etc.)
+        # Also we should include a couple other data points like : account balance, current stock positions, and current profit.
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(6, 6), dtype=np.float16)
+
 
     def _next_observation(self):
         # Get the stock data points for the last 5 days and scale to between 0-1
